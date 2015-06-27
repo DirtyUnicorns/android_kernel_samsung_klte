@@ -35,7 +35,6 @@ typedef struct _U64_S { u64 v; } U64_S;
 
 #define PUT4(s, d) (A32(d) = A32(s))
 #define PUT8(s, d) (A64(d) = A64(s))
-#else /* CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS */
 #define LZ4_WRITE_LITTLEENDIAN_16(p, v)        \
 	do {    \
 		A16(p) = v; \
@@ -46,6 +45,7 @@ typedef struct _U64_S { u64 v; } U64_S;
 #define A64(x) get_unaligned((u64 *)&(((U16_S *)(x))->v))
 #define A32(x) get_unaligned((u32 *)&(((U16_S *)(x))->v))
 #define A16(x) get_unaligned((u16 *)&(((U16_S *)(x))->v))
+
 #define PUT4(s, d) \
 	put_unaligned(get_unaligned((const u32 *) s), (u32 *) d)
 #define PUT8(s, d) \
@@ -137,6 +137,7 @@ typedef struct _U64_S { u64 v; } U64_S;
 #else
 #define LZ4_NBCOMMONBYTES(val) (__builtin_ctz(val) >> 3)
 #endif
+
 #endif
 
 #define LZ4_READ_LITTLEENDIAN_16(d, s, p) \
